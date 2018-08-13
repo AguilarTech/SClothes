@@ -3,7 +3,9 @@ package io.aguilartech.SmartClothesLine;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -245,9 +247,6 @@ public class MainActivity extends AppCompatActivity {
         weatherInfo = "";
 
 
-        Log.i("latitude",Double.toString(latitude));
-
-
         button.startAnimation();
 
         DownloadSunsetSunrise getSunriseSunset = new DownloadSunsetSunrise();
@@ -377,9 +376,7 @@ public class MainActivity extends AppCompatActivity {
         */
 
         for(int i = 0 ; i < date.length; i++) {
-            Log.i("Iteration",Integer.toString(i));
             if(sunrise < UNIXtoHourofDay(date[i]) && UNIXtoHourofDay(date[i]) < sunset) {
-                Log.i("day",Integer.toString(i));
                 itemTitle.add(UNIXtoHumanDate(date[i]) + " - " + description[i].toUpperCase());
                 itemDetails.add(howFastWouldClothesDry(i));
                 itemStats.add(temp[i] + "°C Humidity: " + humidity[i]+"%");
@@ -455,19 +452,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            //Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-            if(location != null) {
-                 latitude = round(location.getLatitude(),2);
-                 longitude = round(location.getLongitude(),2);
+            Criteria  criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
 
-            } else {
-               Toast.makeText(this, "location can't be found", Toast.LENGTH_SHORT).show();
-            }
+            locationManager.requestSingleUpdate(criteria, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    Log.i("location", location.toString());
+                    latitude = round(location.getLatitude(),2);
+                    longitude = round(location.getLongitude(),2);
+                }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {
+                }
+
+                @Override
+                public void onProviderEnabled(String s) {
+                }
+
+                @Override
+                public void onProviderDisabled(String s) {
+                }
+            },null);
+
+            //if(location != null) {
+             //    latitude = round(location.getLatitude(),2);
+              //   longitude = round(location.getLongitude(),2);
+
+            //} else {
+            //   Toast.makeText(this, "location can't be found", Toast.LENGTH_SHORT).show();
+            //}
         }
     }
 
