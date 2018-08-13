@@ -1,4 +1,4 @@
-package io.aguilartech.melbourneweather;
+package io.aguilartech.SmartClothesLine;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

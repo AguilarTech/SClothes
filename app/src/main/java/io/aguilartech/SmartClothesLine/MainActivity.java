@@ -1,4 +1,4 @@
-package io.aguilartech.melbourneweather;
+package io.aguilartech.SmartClothesLine;
 
 import android.Manifest;
 import android.content.Context;
@@ -10,17 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
@@ -65,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
     long sunriseUNIX;
     long sunsetUNIX;
-    double latitude = -37.91;
-    double longitude = 145.01;
+    double latitude;
+    double longitude;
     int sunrise;
     int sunset;
     int time;
@@ -117,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject cityJSON =  jsonObject.getJSONObject("sys");
                 sunriseUNIX = cityJSON.getLong("sunrise");
                 sunsetUNIX  = cityJSON.getLong("sunset");
+
+                sunrise = UNIXtoHourofDay(sunriseUNIX);
+                sunset  = UNIXtoHourofDay(sunsetUNIX);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -235,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     weatherInfo += UNIXtoHumanDate(date[i]) + " " + main[i] + " " + description[i] + " " + temp[i] + "°C " + cloudCover[i] + " " + windSpeed[i] + " " + rain[i] + "\n";
                 }
+
                 makeList ();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -244,10 +240,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getWeather(View view) {
-
         getLocation();
 
         weatherInfo = "";
+
+
+        Log.i("latitude",Double.toString(latitude));
+
 
         button.startAnimation();
 
@@ -378,7 +377,9 @@ public class MainActivity extends AppCompatActivity {
         */
 
         for(int i = 0 ; i < date.length; i++) {
+            Log.i("Iteration",Integer.toString(i));
             if(sunrise < UNIXtoHourofDay(date[i]) && UNIXtoHourofDay(date[i]) < sunset) {
+                Log.i("day",Integer.toString(i));
                 itemTitle.add(UNIXtoHumanDate(date[i]) + " - " + description[i].toUpperCase());
                 itemDetails.add(howFastWouldClothesDry(i));
                 itemStats.add(temp[i] + "°C Humidity: " + humidity[i]+"%");
@@ -449,13 +450,7 @@ public class MainActivity extends AppCompatActivity {
 
          button = (CircularProgressButton) findViewById(R.id.button);
 
-        sunriseUNIX = 1533244729;
-        sunsetUNIX = 1533281660;
-
-        sunrise = UNIXtoHourofDay(sunriseUNIX);
-        sunset  = UNIXtoHourofDay(sunsetUNIX);
-
-
+        getLocation();
 
     }
 
@@ -471,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
                  longitude = round(location.getLongitude(),2);
 
             } else {
-               // Toast.makeText(this, "location can't be found", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, "location can't be found", Toast.LENGTH_SHORT).show();
             }
         }
     }
