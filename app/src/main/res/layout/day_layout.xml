@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/listItemStatsView"
+        android:layout_width="321dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/listItemDetailsView"
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:textColor="@android:color/background_light"
+        android:textSize="13dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/weatherIconView"
+        app:layout_constraintTop_toBottomOf="@id/listItemDetailsView" />
+
+    <ImageView
+        android:id="@+id/weatherIconView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/weathericon"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/w01d" />
+
+    <TextView
+        android:id="@+id/listItemTitleView"
+        android:layout_width="321dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/listItemDetailsView"
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:textColor="@android:color/background_light"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/listItemDetailsView"
+        app:layout_constraintLeft_toRightOf="@+id/weatherIconView" />
+
+    <TextView
+        android:id="@+id/listItemDetailsView"
+        android:layout_width="321dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:textColor="@android:color/background_light"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/weatherIconView"
+        app:layout_constraintTop_toBottomOf="@id/listItemTitleView" />
+</android.support.constraint.ConstraintLayout>

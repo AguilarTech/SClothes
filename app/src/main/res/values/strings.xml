@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Melbourne Weather</string>
+    <string name="weathericon">weathericon</string>
+</resources>
